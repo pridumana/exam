@@ -1,0 +1,106 @@
+Table Residents {
+  resident_id [pk]
+  full_name
+  contact_details
+  identity_document
+  preferences
+  loyalty_status
+}
+
+Table ChamberTypes {
+  type_id [pk]
+  type_name
+  max_occupancy
+  amenities
+  base_rate
+  size_sqm
+}
+
+Table ChamberStates {
+  state_id [pk]
+  state_name
+  state_description
+}
+
+Table Chambers {
+  chamber_id [pk]
+  chamber_number
+  floor_level
+  category_type [ref: > ChamberTypes.type_id]
+  current_state [ref: > ChamberStates.state_id]
+}
+
+Table Reservations {
+  reservation_id [pk]
+  resident_ref [ref: > Residents.resident_id]
+  chamber_ref [ref: > Chambers.chamber_id]
+  expected_arrival
+  planned_departure
+  reservation_status
+  special_requests
+}
+
+Table Stays {
+  stay_id [pk]
+  reservation_ref [ref: > Reservations.reservation_id]
+  actual_check_in
+  actual_check_out
+  stay_rating
+  incident_reports
+}
+
+Table AccessKeys {
+  key_id [pk]
+  resident_ref [ref: > Residents.resident_id]
+  chamber_ref [ref: > Chambers.chamber_id]
+  key_issued
+  key_expires
+  key_status
+  key_type
+}
+
+Table Personnel {
+  employee_id [pk]
+  employee_name
+  position
+  contact_info
+  work_schedule
+  access_level
+}
+
+Table Amenities {
+  service_id [pk]
+  service_name
+  service_category
+  price
+  availability
+}
+
+Table ServiceOrders {
+  order_id [pk]
+  service_ref [ref: > Amenities.service_id]
+  stay_ref [ref: > Stays.stay_id]
+  order_time
+  fulfillment_status
+  charged_amount
+}
+
+Table Transactions {
+  transaction_id [pk]
+  stay_ref [ref: > Stays.stay_id]
+  amount
+  payment_date
+  payment_method
+  invoice_number
+  transaction_status
+}
+
+Table Sanitation {
+  task_id [pk]
+  chamber_ref [ref: > Chambers.chamber_id]
+  assigned_to [ref: > Personnel.employee_id]
+  scheduled_time
+  completion_time
+  inspection_notes
+  cleaning_supplies
+}
