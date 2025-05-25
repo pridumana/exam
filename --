@@ -1,104 +1,111 @@
+// Гостиница "Маяк" - Полная ERD схема
+
 Table Residents {
-  resident_id [pk]
-  full_name
-  contact_details
-  identity_document
-  preferences
-  loyalty_status
+  resident_id INT [pk]
+  full_name VARCHAR(100)
+  contact_details VARCHAR(100)
+  identity_document VARCHAR(50)
+  preferences TEXT
+  loyalty_status VARCHAR(20)
 }
 
 Table ChamberTypes {
-  type_id [pk]
-  type_name
-  max_occupancy
-  amenities
-  base_rate
-  size_sqm
+  type_id INT [pk]
+  type_name VARCHAR(50)
+  max_occupancy INT
+  amenities TEXT
+  base_rate DECIMAL(10,2)
+  size_sqm INT
 }
 
 Table ChamberStates {
-  state_id [pk]
-  state_name
-  state_description
+  state_id INT [pk]
+  state_name VARCHAR(20)
+  state_description TEXT
 }
 
 Table Chambers {
-  chamber_id [pk]
-  chamber_number
-  floor_level
-  category_type [ref: > ChamberTypes.type_id]
-  current_state [ref: > ChamberStates.state_id]
+  chamber_id INT [pk]
+  chamber_number VARCHAR(10)
+  floor_level INT
+  category_type INT [ref: > ChamberTypes.type_id]
+  current_state INT [ref: > ChamberStates.state_id]
 }
 
 Table Reservations {
-  reservation_id [pk]
-  resident_ref [ref: > Residents.resident_id]
-  chamber_ref [ref: > Chambers.chamber_id]
-  expected_arrival
-  planned_departure
-  reservation_status
-  special_requests
+  reservation_id INT [pk]
+  resident_ref INT [ref: > Residents.resident_id]
+  chamber_ref INT [ref: > Chambers.chamber_id]
+  expected_arrival TIMESTAMP
+  planned_departure TIMESTAMP
+  reservation_status VARCHAR(20)
+  special_requests TEXT
 }
 
 Table Stays {
-  stay_id [pk]
-  reservation_ref [ref: > Reservations.reservation_id]
-  actual_check_in
-  actual_check_out
-  stay_rating
-  incident_reports
+  stay_id INT [pk]
+  reservation_ref INT [ref: > Reservations.reservation_id]
+  actual_check_in TIMESTAMP
+  actual_check_out TIMESTAMP
+  stay_rating INT
+  incident_reports TEXT
 }
 
 Table AccessKeys {
-  key_id [pk]
-  resident_ref [ref: > Residents.resident_id]
-  chamber_ref [ref: > Chambers.chamber_id]
-  key_issued
-  key_expires
-  key_status
-  key_type
+  key_id INT [pk]
+  resident_ref INT [ref: > Residents.resident_id]
+  chamber_ref INT [ref: > Chambers.chamber_id]
+  key_issued TIMESTAMP
+  key_expires TIMESTAMP
+  key_status VARCHAR(20)
+  key_type VARCHAR(20)
 }
 
 Table Personnel {
-  employee_id [pk]
-  employee_name
-  position
-  contact_info
-  work_schedule
-  access_level
+  employee_id INT [pk]
+  employee_name VARCHAR(100)
+  position VARCHAR(50)
+  contact_info VARCHAR(100)
+  work_schedule TEXT
+  access_level VARCHAR(30)
 }
 
 Table Amenities {
-  service_id [pk]
-  service_name
-  service_category
-  price
-  availability
+  service_id INT [pk]
+  service_name VARCHAR(50)
+  service_category VARCHAR(30)
+  price DECIMAL(10,2)
+  availability BOOLEAN
 }
 
 Table ServiceOrders {
-  order_id [pk]
-  service_ref [ref: > Amenities.service_id]
-  stay_ref [ref: > Stays.stay_id]
-  order_time
-  fulfillment_status
-  charged_amount
+  order_id INT [pk]
+  service_ref INT [ref: > Amenities.service_id]
+  stay_ref INT [ref: > Stays.stay_id]
+  order_time TIMESTAMP
+  fulfillment_status VARCHAR(20)
+  charged_amount DECIMAL(10,2)
 }
 
 Table Transactions {
-  transaction_id [pk]
-  stay_ref [ref: > Stays.stay_id]
-  amount
-  payment_date
-  payment_method
-  invoice_number
-  transaction_status
+  transaction_id INT [pk]
+  stay_ref INT [ref: > Stays.stay_id]
+  amount DECIMAL(10,2)
+  payment_date TIMESTAMP
+  payment_method VARCHAR(30)
+  invoice_number VARCHAR(50)
+  transaction_status VARCHAR(20)
 }
 
 Table Sanitation {
-  task_id [pk]
-  chamber_ref [ref: > Chambers.chamber_id]
-  assigned_to [ref: > Personnel.employee_id]
+  task_id INT [pk]
+  chamber_ref INT [ref: > Chambers.chamber_id]
+  assigned_to INT [ref: > Personnel.employee_id]
+  scheduled_time TIMESTAMP
+  completion_time TIMESTAMP
+  inspection_notes TEXT
+  cleaning_supplies TEXT
+}
   scheduled_time
   completion_time
   inspection_notes
